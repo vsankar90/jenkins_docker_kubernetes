@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: privateapp-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: privateapp
+  template:
+    metadata: 
+      name: private-reg
+      labels:
+        app: privateapp
+    spec:
+      containers:
+      - name: privateapp
+        image: sankarv/gitmaventomcat
+        ports:
+        - containerPort: 8080
