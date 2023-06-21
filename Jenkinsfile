@@ -29,13 +29,14 @@ pipeline {
         }
 
         stage('Apply Kubernetes Manifests') {
-             def kubeconfig = readFile('.')
+                 
             
             steps {
-               
-                bat 'kubectl apply -f deployment.yaml'
-                bat 'kubectl apply -f service.yaml'
-                bat 'kubectl apply -f scaling.yaml'
+               script {
+                    def kubeconfig = readFile('.')
+                    sh "echo '$kubeconfig' > kubeconfig.yaml"
+                    sh 'kubectl --kubeconfig=kubeconfig.yaml apply -f ./path/to/kubernetes-manifests'
+                }
             }
         }
     }
