@@ -32,9 +32,9 @@ pipeline {
                  
             
             steps {
-                bat 'kubectl login admin-user'
+            
                
-                   bat 'kubectl apply -f deployment.yaml'
+                   bat 'pwd'
                    
                
             }
