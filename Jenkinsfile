@@ -31,6 +31,7 @@ pipeline {
         stage('Apply Kubernetes Manifests') {
             
             steps {
+                def kubeconfig = readFile('.')
                 bat 'kubectl apply -f deployment.yaml'
                 bat 'kubectl apply -f service.yaml'
                 bat 'kubectl apply -f scaling.yaml'
