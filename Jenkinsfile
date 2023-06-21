@@ -24,7 +24,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                bat 'docker push sankarv/gitmaventomcat'
+                bat 'docker push sankarv/gitmaventomcat:v1'
             }
         }
 
