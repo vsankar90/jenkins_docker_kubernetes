@@ -4,48 +4,38 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/vsankar90/jenkins_docker_kubernetes.git'
+                bat 'git clone https://github.com/vsankar90/jenkins_docker_kubernetes.git'
             }
         }
-        
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
-                        def customImage = docker.build('sankarv/gitmaventomcat:v1', 'Dockerfile')
-                    }
-                }
+                bat 'docker build -t sankarv/gitmaventomcat:v1 .'
             }
         }
 
-        stage('Login to Docker Registry') {
+        stage('Docker Login') {
             steps {
-                script {
-                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
-                        docker.login()
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerlogin', usernameVariable: 'dockerHubUser', passwordVariable: 'dockerHubPassword')]) {
+                    bat "docker login -u %dockerHubUser% -p %dockerHubPassword%"
                 }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
-                        docker.image('sankarv/gitmaventomcat:v1').push()
-                    }
-                }
+                bat 'docker push sankarv/gitmaventomcat'
             }
         }
 
-        stage('Deploy with kubectl') {
+        stage('Apply Kubernetes Manifests') {
+            environment {
+                KUBECONFIG = "."
+            }
             steps {
-                script {
-                    def kubeconfig = readFile('.')
-                    sh "echo '$kubeconfig' > kubeconfig.yaml"
-                    sh 'kubectl --kubeconfig=kubeconfig.yaml apply -f ./path/to/kubernetes-manifests'
-                }
+                bat 'kubectl apply -f depoyment.yaml'
+                bat 'kubectl apply -f service.yaml'
+                bat 'kubectl apply -f scaling.yaml'
             }
         }
     }
