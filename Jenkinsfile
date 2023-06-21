@@ -34,7 +34,7 @@ pipeline {
             steps {
             
                
-                   bat 'pwd'
+                   bat 'kubectl apply -f deployment.yaml'
                    
                
             }
