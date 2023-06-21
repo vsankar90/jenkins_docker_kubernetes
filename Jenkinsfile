@@ -16,10 +16,9 @@ pipeline {
 
         stage('Login to Docker Registry') {
             steps {
-                script {
-                    docker.withRegistry('https://your-docker-registry', 'dockerlogin') {
-                        docker.login()
-                    }
+                	withCredentials([usernamePassword(credentialsId: 'dockerlogin', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                        sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                        sh 'docker push shanem/spring-petclinic:latest'
                 }
             }
         }
