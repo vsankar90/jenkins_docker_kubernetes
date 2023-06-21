@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: privateapp
-        image: sankarv/gitmaventomcat
+        image: sankarv/gitmaventomcat:v1
         ports:
         - containerPort: 8080
