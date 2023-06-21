@@ -7,18 +7,24 @@ pipeline {
                 git 'https://github.com/vsankar90/jenkins_docker_kubernetes.git'
             }
         }
+        
 
         stage('Build Docker Image') {
             steps {
-               bat 'docker build -t gitmaventomcat:v1 .'
+                script {
+                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
+                        def customImage = docker.build('sankarv/gitmaventomcat:v1', 'Dockerfile')
+                    }
+                }
             }
         }
 
         stage('Login to Docker Registry') {
             steps {
-                	withCredentials([usernamePassword(credentialsId: 'dockerlogin', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                        bat "docker login -u ${env.dockerHubUser} -p $(env.dockerHubPassword)"
-                        bat 'docker push shanem/spring-petclinic:latest'
+                script {
+                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
+                        docker.login()
+                    }
                 }
             }
         }
@@ -26,7 +32,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://your-docker-registry', 'dockerlogin') {
+                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
                         docker.image('sankarv/gitmaventomcat:v1').push()
                     }
                 }
@@ -37,8 +43,8 @@ pipeline {
             steps {
                 script {
                     def kubeconfig = readFile('.')
-                    sh "echo '$kubeconfig' > kubeconfig.yaml"
-                    sh 'kubectl --kubeconfig=kubeconfig.yaml apply -f ./path/to/kubernetes-manifests'
+                    bat "echo '$kubeconfig' > kubeconfig.yaml"
+                    bat 'kubectl --kubeconfig=kubeconfig.yaml apply -f ./path/to/kubernetes-manifests'
                 }
             }
         }
