@@ -33,11 +33,11 @@ pipeline {
             
             steps {
                 withKubeConfig([serverUrl: 'https://kubernetes.docker.internal:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy'])
-               script {
-                   bat '''kubectl apply -f deployment.yaml
-                   kubectl apply -f service.yaml
-                   kubectl apply -f scaling.yaml'''
-               }
+               
+                   bat 'kubectl apply -f deployment.yaml'
+                   bat 'kubectl apply -f service.yaml'
+                   bat 'kubectl apply -f scaling.yaml'
+               
             }
         }
     }
