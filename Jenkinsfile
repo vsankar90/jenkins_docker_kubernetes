@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-               bat 'docker build -t gitmaventomcat:v1'
+               bat 'docker build -t gitmaventomcat:v1 .'
             }
         }
 
