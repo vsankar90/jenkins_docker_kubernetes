@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-               sh 'docker build -t sankarv/gitmaventomcat:v1 .'
+               bat 'docker build -t gitmaventomcat:v1'
             }
         }
 
