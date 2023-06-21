@@ -11,7 +11,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t sankarv/gitmaventomcat:v1 .'
+                script {
+                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
+                        def customImage = docker.build('sankarv/gitmaventomcat:v1', 'Dockerfile')
+                    }
                 }
             }
         }
@@ -40,8 +43,8 @@ pipeline {
             steps {
                 script {
                     def kubeconfig = readFile('.')
-                    bat "echo '$kubeconfig' > kubeconfig.yaml"
-                    bat 'kubectl --kubeconfig=kubeconfig.yaml apply -f ./path/to/kubernetes-manifests'
+                    sh "echo '$kubeconfig' > kubeconfig.yaml"
+                    sh 'kubectl --kubeconfig=kubeconfig.yaml apply -f ./path/to/kubernetes-manifests'
                 }
             }
         }
