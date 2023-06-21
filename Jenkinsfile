@@ -17,7 +17,7 @@ pipeline {
         stage('Login to Docker Registry') {
             steps {
                 	withCredentials([usernamePassword(credentialsId: 'dockerlogin', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                        bat "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                        bat "docker login -u ${env.dockerHubUser} -p 81257Sankar)(*&"
                         bat 'docker push shanem/spring-petclinic:latest'
                 }
             }
