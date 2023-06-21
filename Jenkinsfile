@@ -33,10 +33,10 @@ pipeline {
             
             steps {
                script {
-                    def kubeconfig = readFile('.')
-                    sh "echo '$kubeconfig' > kubeconfig.yaml"
-                    sh 'kubectl --kubeconfig=kubeconfig.yaml apply -f ./path/to/kubernetes-manifests'
-                }
+                   bat '''kubectl apply -f deployment.yaml
+                   kubectl apply -f service.yaml
+                   kubectl apply -f scaling.yaml'''
+               }
             }
         }
     }
