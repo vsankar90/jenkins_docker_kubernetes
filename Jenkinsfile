@@ -11,7 +11,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-               bat 'docker build -t sankarv/gitmaventomcat:v1 .'
+                script {
+                    docker.withRegistry('https://hub.docker.com/u/sankarv', 'dockerlogin') {
+                        def customImage = docker.build('sankarv/gitmaventomcat:v1', 'Dockerfile')
+                    }
                 }
             }
         }
