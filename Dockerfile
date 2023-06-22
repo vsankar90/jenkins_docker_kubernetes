@@ -1,6 +1,6 @@
 FROM alpine/git
 WORKDIR /app
-RUN git clone  https://github.com/mitreid-connect/simple-web-app.git
+RUN git clone  https://github.com/efsavage/hello-world-war      
 
 FROM maven:3.5-jdk-8-alpine
 WORKDIR /app
