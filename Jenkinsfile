@@ -34,7 +34,7 @@ pipeline {
             steps {
             
                
-                   kubectl apply -f deployment.yaml
+                   powershell 'kubectl apply -f deployment.yaml '
                    
                
             }
