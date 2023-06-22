@@ -4,10 +4,10 @@ RUN git clone  https://github.com/efsavage/hello-world-war
 
 FROM maven:3.5-jdk-8-alpine
 WORKDIR /app
-COPY --from=0 /app/simple-web-app /app 
+COPY --from=0 /app/hello-world-war /app 
 RUN mvn package 
 
 FROM tomcat:8.0
-COPY --from=1 /app/target/simple-web-app.war /usr/local/tomcat/webapps
+COPY --from=1 /app/target/hello-world.war /usr/local/tomcat/webapps
 EXPOSE 8080
 CMD ["/usr/local/tomcat/bin/catalina.sh", "run"]
